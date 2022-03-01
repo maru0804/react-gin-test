@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  node:
+    build: ./docker/node
+    volumes:
+      - ./node:/usr/src/app:cached
+    command: sh -c "cd react-app && yarn start"
+    ports:
+      - "3000:3000"
+  api:
+    volumes:
+      - ./:/api
+    tty: true
+    build: 
+      context: .
+      dockerfile: docker/api/Dockerfile
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "1234:1234"
